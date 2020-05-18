@@ -12,8 +12,7 @@ export class Provider extends Component {
         super ();
         this.data = new Data ();
         this.state = { 
-            authUser: Cookies.getJSON ('authUser') || null,
-            courses: []
+            authUser: Cookies.getJSON ('authUser') || null
         };
     }
 
@@ -22,9 +21,11 @@ export class Provider extends Component {
         /* Value represents an object containing the context to be shared throughout the component tree. */
         const value = { 
             authUser: this.state.authUser, 
-            courses: this.state.courses, 
             data: this.data, 
-            actions: {} 
+            actions: {
+                getCourses: this.getCourses,
+                getCourse: this.getCourse
+            } 
         };
         
         return (
@@ -35,12 +36,14 @@ export class Provider extends Component {
     }
 
     getCourses = async () => {
-        const courses = await this.data.getCourses ()
-        this.setState ( () => {
-            return { courses };
-        });
+        const courses = await this.data.getCourses ();
         return courses;
-    }
+    };
+
+    getCourse = async (id) => {
+        const course = await this.data.getCourse (id);
+        return course;
+    };
 };
 
 export const Consumer = Context.Consumer; 
