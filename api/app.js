@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require ('express');
+const cors = require ('cors');
 const morgan = require ('morgan'); 
 const { sequelize } = require ('./models'); // import Sequelize
 const users = require ('./routes/users'); 
@@ -10,6 +11,9 @@ const courses = require ('./routes/courses');
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
 
 const app = express ();
+
+// Support cross-origin resource sharing or CORS
+app.use (cors ()); 
 
 // Setup morgan which gives us http request logging
 app.use (morgan ('dev'));
