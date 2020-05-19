@@ -137,9 +137,7 @@ router.put ('/courses/:id', authenticateUser, [
 /* Send a DELETE request to /api/courses/:id to DELETE a course with a status code 204. */
 
 router.delete ('/courses/:id', authenticateUser, asyncHandler ( async (req, res, next) => {
-    const course = await Course.findByPk (req.params.id
-        // userId: req.currentUser.id
-    );
+    const course = await Course.findByPk (req.params.id);
     if (course) {
         if (course.userId == req.currentUser.id) {
             await course.destroy ();

@@ -9,7 +9,7 @@ export default class Header extends React.PureComponent {
                 <div className="bounds">
                     <h1 className="header--logo">Courses</h1>
                     <nav>
-                        <span>Welcome Kika!</span>
+                        <span>Welcome Luna!</span>
                         <a className="signout" href="index.html">Sign Out</a>
                     </nav>
                 </div>

@@ -34,7 +34,7 @@ class Courses extends Component {
         let courses;
         if (data.length > 0) {
             courses = data.map (course => 
-            <Course key={course.id} title={course.title} /> ); 
+            <Course key={course.id} title={course.title} id={course.id} /> ); 
         } 
 
         return (

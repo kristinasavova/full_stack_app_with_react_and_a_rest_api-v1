@@ -1,6 +1,7 @@
 import React , { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom'; 
 
-export default class ActionsBar extends Component {
+class ActionsBar extends Component {
 
     render () {
         return (
@@ -8,13 +9,15 @@ export default class ActionsBar extends Component {
                 <div className="bounds">
                     <div className="grid-100">
                         <span>
-                            <a className="button" href="/">Update Course</a>
-                            <a className="button" href="/">Delete Course</a>
+                            <Link className="button" to={`/courses/${this.props.match}/update`}>Update Course</Link>
+                            <Link className="button" to="/courses">Delete Course</Link>
                         </span>
-                        <a className="button-secondary" href="/">Return to List</a>
+                        <Link className="button-secondary" to="/courses">Return to List</Link>
                     </div>
                 </div>
             </div>
         );
     }
-}
+};
+
+export default withRouter (ActionsBar); 

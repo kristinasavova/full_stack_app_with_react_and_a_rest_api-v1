@@ -1,5 +1,6 @@
 import React, { Component } from 'react';  
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 /* Import components. */
 import Header from './Header';
@@ -8,8 +9,8 @@ import ActionsBar from './ActionsBar';
 class CourseDetail extends Component {
 
     static propTypes = {
-        match: PropTypes.object,
-        context: PropTypes.object
+        match: PropTypes.object.isRequired,
+        context: PropTypes.object.isRequired
     };
 
     state = {
@@ -18,8 +19,8 @@ class CourseDetail extends Component {
     };
 
     componentDidMount () {
-        const { context } = this.props; 
-        context.actions.getCourse (this.props.match.params.id)
+        const { context, match } = this.props;  
+        context.actions.getCourse (match.params.id)
             .then (course => {
                 if (course) {
                     console.log ('Course is successfully fetched!');
@@ -42,7 +43,7 @@ class CourseDetail extends Component {
                 <Header />
                 <hr />
                 <div>
-                    <ActionsBar />
+                    <ActionsBar match={this.props.match.params.id} />
                     <div className="bounds course--detail">
                         <div className="grid-66">
                             <div className="course--header">
@@ -75,4 +76,4 @@ class CourseDetail extends Component {
     }
 };
 
-export default CourseDetail; 
+export default withRouter (CourseDetail); 
