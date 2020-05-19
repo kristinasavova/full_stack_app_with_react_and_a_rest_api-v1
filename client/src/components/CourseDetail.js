@@ -1,10 +1,6 @@
 import React, { Component } from 'react';  
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import withContext from '../Context';
-import ActionsBar from './ActionsBar';
-
-const ActionsBarWithContext = withContext (ActionsBar); 
+import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types'; 
 
 class CourseDetail extends Component {
 
@@ -45,7 +41,17 @@ class CourseDetail extends Component {
             <React.Fragment>
                 <hr />
                 <div>
-                    <ActionsBarWithContext match={this.props.match.params.id} />
+                    <div className="actions--bar">
+                        <div className="bounds">
+                            <div className="grid-100">
+                                <span>
+                                    <Link to={`/courses/${this.props.match.params.id}/update`} className="button">Update Course</Link>
+                                    <Link to="/courses" className="button">Delete Course</Link>
+                                </span>
+                            <Link to="/courses" className="button-secondary">Return to List</Link>
+                            </div>
+                        </div>
+                    </div>
                     <div className="bounds course--detail">
                         <div className="grid-66">
                             <div className="course--header">
