@@ -1,10 +1,10 @@
 import React, { Component } from 'react';  
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-
-/* Import components. */
-import Header from './Header';
+import withContext from '../Context';
 import ActionsBar from './ActionsBar';
+
+const ActionsBarWithContext = withContext (ActionsBar); 
 
 class CourseDetail extends Component {
 
@@ -14,36 +14,38 @@ class CourseDetail extends Component {
     };
 
     state = {
-        course: null,
-        errors: []
+        course: null
     };
 
-    componentDidMount () {
-        const { context, match } = this.props;  
-        context.actions.getCourse (match.params.id)
+    componentDidMount () { 
+        this.props.context.data.getCourse (this.props.match.params.id)
             .then (course => {
-                if (course) {
-                    console.log ('Course is successfully fetched!');
+                this.setState ( () => {
+                    return { course };
+                });
+            })
+            .catch (error => console.log (error));
+    };
+
+    componentDidUpdate (prevProps) {
+        if (this.props.match.params.id !== prevProps.match.params.id) {
+            this.props.context.data.getCourse (this.props.match.params.id)
+                .then (course => {
                     this.setState ( () => {
                         return { course };
                     });
-                } else {
-                    this.setState ( () => {
-                        return { errors: [ 'Fetching was unsuccessful!' ] };
-                    });
-                }
-            })
-            .catch (error => console.log (error));
+                })
+                .catch (error => console.log (error)); 
+        }
     };
 
     render () {
         const { title, teacher, description, estimatedTime, materialsNeeded } = this.state.course;
         return (
-            <div>
-                <Header />
+            <React.Fragment>
                 <hr />
                 <div>
-                    <ActionsBar match={this.props.match.params.id} />
+                    <ActionsBarWithContext match={this.props.match.params.id} />
                     <div className="bounds course--detail">
                         <div className="grid-66">
                             <div className="course--header">
@@ -71,7 +73,7 @@ class CourseDetail extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 };

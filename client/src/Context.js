@@ -21,11 +21,7 @@ export class Provider extends Component {
         /* Value represents an object containing the context to be shared throughout the component tree. */
         const value = { 
             authUser: this.state.authUser, 
-            data: this.data, 
-            actions: {
-                getCourses: this.getCourses,
-                getCourse: this.getCourse
-            } 
+            data: this.data
         };
         
         return (
@@ -34,16 +30,6 @@ export class Provider extends Component {
             </Context.Provider>
         );
     }
-
-    getCourses = async () => {
-        const courses = await this.data.getCourses ();
-        return courses;
-    };
-
-    getCourse = async (id) => {
-        const course = await this.data.getCourse (id);
-        return course;
-    };
 };
 
 export const Consumer = Context.Consumer; 

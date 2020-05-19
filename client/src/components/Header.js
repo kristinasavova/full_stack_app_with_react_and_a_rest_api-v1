@@ -1,9 +1,8 @@
-import React from 'react'; 
+import React, { Component } from 'react'; 
 
-export default class Header extends React.PureComponent {
+class Header extends Component {
 
-    render () {
-        
+    render () { 
         return (
             <div className="header">
                 <div className="bounds">
@@ -16,4 +15,6 @@ export default class Header extends React.PureComponent {
             </div>
         );
     }
-}
+};
+
+export default Header;

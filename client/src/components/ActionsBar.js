@@ -9,10 +9,10 @@ class ActionsBar extends Component {
                 <div className="bounds">
                     <div className="grid-100">
                         <span>
-                            <Link className="button" to={`/courses/${this.props.match}/update`}>Update Course</Link>
-                            <Link className="button" to="/courses">Delete Course</Link>
+                            <Link to={`/courses/${this.props.match}/update`} className="button">Update Course</Link>
+                            <Link to="/courses" className="button">Delete Course</Link>
                         </span>
-                        <Link className="button-secondary" to="/courses">Return to List</Link>
+                        <Link to="/courses" className="button-secondary">Return to List</Link>
                     </div>
                 </div>
             </div>

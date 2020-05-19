@@ -39,9 +39,10 @@ export default class Data {
 
     /**
      * A method to makes a GET req to the /courses/:id endpoint to obtain a course
+     * @param {integer} ID - ID of the course to get  
      */
-    async getCourse (id) {
-        const response = await this.api (`/courses/${id}`, 'GET');
+    async getCourse (ID) {
+        const response = await this.api (`/courses/${ID}`, 'GET');
         if (response.status === 200) {
             return response.json ().then (data => data);
         } else {
@@ -49,4 +50,17 @@ export default class Data {
         }
     };
 
+    /**
+     * A method to makes a GET req to the /courses/:id endpoint to obtain a course
+     * @param {object} data - data of the new course 
+     */
+    async createCourse (data) {
+        const response = await this.api ('/courses', 'POST', data); 
+        if (response.status === 201) {
+            console.log ('A new course is successfully posted!')
+            return [];
+        } else {
+            throw new Error ('Error fetching data from server');
+        }
+    }
 };

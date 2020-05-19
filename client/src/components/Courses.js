@@ -11,8 +11,7 @@ class Courses extends Component {
     };
 
     componentDidMount () {
-        const { context } = this.props; 
-        context.actions.getCourses ()
+        this.props.context.data.getCourses ()
             .then (courses => {
                 if (courses) {
                     console.log ('Courses are successfully fetched!');
@@ -38,8 +37,7 @@ class Courses extends Component {
         } 
 
         return (
-            <div>
-                <Header />
+            <React.Fragment>
                 <hr />
                 <div className="bounds">
                     { courses }
@@ -53,7 +51,7 @@ class Courses extends Component {
                         </Link>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 };
