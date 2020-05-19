@@ -37,6 +37,7 @@ class CourseDetail extends Component {
 
     render () {
         const { title, teacher, description, estimatedTime, materialsNeeded } = this.state.course;
+        const { id } = this.props.match.params;
         return (
             <React.Fragment>
                 <hr />
@@ -45,10 +46,10 @@ class CourseDetail extends Component {
                         <div className="bounds">
                             <div className="grid-100">
                                 <span>
-                                    <Link to={`/courses/${this.props.match.params.id}/update`} className="button">Update Course</Link>
+                                    <Link to={`/courses/${id}/update`} className="button">Update Course</Link>
                                     <Link to="/courses" className="button">Delete Course</Link>
                                 </span>
-                            <Link to="/courses" className="button-secondary">Return to List</Link>
+                            <Link to="/courses" className="button button-secondary">Return to List</Link>
                             </div>
                         </div>
                     </div>
@@ -72,7 +73,9 @@ class CourseDetail extends Component {
                                     </li>
                                     <li className="course--stats--list--item">
                                         <h4>Materials Needed</h4>
-                                        <p>{materialsNeeded}</p>
+                                        <ul>
+                                            <li>{materialsNeeded}</li>
+                                        </ul>
                                     </li>
                                 </ul>
                             </div>
