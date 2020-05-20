@@ -14,14 +14,43 @@ export class Provider extends Component {
         this.state = { 
             authUser: Cookies.getJSON ('authUser') || null
         };
-    }
+    };
+
+    /* Use credentials to call the getUser method in Data.js. */
+    signIn = async (username, password) => {
+        const user = await this.data.getUser (username, password);
+        if (user !== null) {
+            this.setState ( () => {
+                return { authUser: user };
+            });
+            /* Create a cookie that stores the authenticated user's data. The first argument specifies the name of the cookie to set, 
+            the second one specifies the value to store. The last argument sets additional cookie options -- for example, an expiration. 
+            The value 1, for example, creates a cookie that expires 1 day from now. */
+            Cookies.set ('authUser', JSON.stringify (user), { expires: 1 });
+        }
+        return user; 
+    };
+
+    signOut = () => {
+        /* Remove the name and username properties from state – the user is no longer authenticated. */
+        this.setState ( () => {
+            return { authUser: null };
+        });
+        /* Delete the authenticatedUser cookie when a user signs out. */
+        Cookies.remove ('authUser'); 
+    };
 
     render () {
-        
+
+        const { authUser } = this.state; 
         /* Value represents an object containing the context to be shared throughout the component tree. */
         const value = { 
             authUser: this.state.authUser, 
-            data: this.data
+            data: this.data,
+            actions: { 
+                signIn: this.signIn,
+                signOut: this.signOut
+            }
         };
         
         return (

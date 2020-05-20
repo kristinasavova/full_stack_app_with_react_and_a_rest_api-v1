@@ -5,17 +5,40 @@ import Form from './Form';
 class UserSignIn extends Component {
 
     state = {
-        username: '',
+        emailAddress: '',
         password: '',
         errors: []
     };
 
+    change = event => {
+        const name = event.target.name;
+        const value = event.target.value;
+        this.setState ( () => {
+            return { [name]: value };
+        });
+    };
+
+    submit = () => {
+
+    };
+
+    cancel = () => {
+        this.props.history.push ('/'); 
+    };
+
     render () {
+
+        const { emailAddress, password, errors } = this.state; 
+
         return (
             <div className="bounds">
                 <div className="grid-33 centered signin">
                     <h1>Sign In</h1>
                     <Form 
+                        submit={this.submit}
+                        cancel={this.cancel}
+                        errors={errors}
+                        submitButtonText='Sign In'
                         elements={() => (   // render prop technique
                         <React.Fragment>
                             <div>
@@ -23,6 +46,8 @@ class UserSignIn extends Component {
                                     id="emailAddress" 
                                     name="emailAddress" 
                                     type="text" 
+                                    value={emailAddress}
+                                    onChange={this.change}
                                     placeholder="Email Address" />
                             </div>
                             <div>
@@ -30,6 +55,8 @@ class UserSignIn extends Component {
                                     id="password" 
                                     name="password" 
                                     type="password" 
+                                    value={password}
+                                    onChange={this.change}
                                     placeholder="Password" />
                             </div>
                         </React.Fragment>

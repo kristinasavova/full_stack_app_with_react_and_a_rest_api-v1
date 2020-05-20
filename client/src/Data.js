@@ -26,6 +26,37 @@ export default class Data {
     }
 
     /**
+     * Makes a GET req to the /users endpoint and return a JSON object containing user credentials
+     * @param {string} username - user's email address
+     * @param {string} password - user's password
+     */
+    async getUser (username, password) {
+        const response = await this.api ('/users', 'GET', null, true, { username, password });
+        if (response.status === 200) {
+            return response.json ().then (data => data); 
+        } else if (response.status === 401) {
+            return null;
+        } else {
+            throw new Error ();
+        }
+    };
+
+    /**
+     * Makes a POST request, sending new user data to the /users endpoint
+     * @param {object} user 
+     */
+    async createUser (user) {
+        const response = await this.api ('/users', 'POST', user);
+        if (response.status === 201) {
+            return [];
+        } else if (response.status === 400) {
+            return response.json ().then (data => { return data.errors });
+        } else {
+            throw new Error (); 
+        }
+    };
+
+    /**
      * A method to makes a GET req to the /courses endpoint to obtain the list of courses
      */
     async getCourses () {
@@ -33,7 +64,7 @@ export default class Data {
         if (response.status === 200) {
             return response.json ().then (data => data); 
         } else {
-            throw new Error ('Error fetching data from server');
+            throw new Error ();
         }
     };
 
@@ -46,7 +77,7 @@ export default class Data {
         if (response.status === 200) {
             return response.json ().then (data => data);
         } else {
-            throw new Error ('Error fetching data from server'); 
+            throw new Error (); 
         }
     };
 
@@ -57,10 +88,11 @@ export default class Data {
     async createCourse (data) {
         const response = await this.api ('/courses', 'POST', data); 
         if (response.status === 201) {
-            console.log ('A new course is successfully posted!')
             return [];
+        } else if (response.status === 400) {
+            return response.json ().then (data => { return data.errors });
         } else {
-            throw new Error ('Error fetching data from server');
+            throw new Error ();
         }
     }
 };

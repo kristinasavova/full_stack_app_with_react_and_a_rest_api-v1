@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /* Renders the "Submit" and "Cancel" buttons of a form and any validation errors sent from the API, via the <ErrorsDisplay> function component. */
 const Form = props => {
@@ -46,5 +47,13 @@ function ErrorsDisplay ({ errors }) {
     } 
     return errorsDisplay;
 }
+
+Form.propTypes = {
+    cancel: PropTypes.func.isRequired,
+    submit: PropTypes.func.isRequired,
+    elements: PropTypes.func.isRequired,
+    submitButtonText: PropTypes.string.isRequired,
+    errors: PropTypes.array
+};
 
 export default Form;

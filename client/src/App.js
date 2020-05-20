@@ -4,6 +4,8 @@ import withContext from './Context';
 
 /* Import components. */
 import Header from './components/Header';
+import UserSignUp from './components/UserSignUp';
+import UserSignIn from './components/UserSignIn';
 import Courses from './components/Courses'; 
 import CourseDetail from './components/CourseDetail';
 import CreateCourse from './components/CreateCourse';
@@ -12,6 +14,8 @@ import Error from './components/Error';
 import NotFound from './components/NotFound';
 
 /* Connect the components to the context. */
+const UserSignUpWithContext = withContext (UserSignUp);
+const UserSignInWithContext = withContext (UserSignIn); 
 const CoursesWithContext = withContext (Courses); 
 const CourseDetailWithContext = withContext (CourseDetail); 
 const CreateCourseWithContext = withContext (CreateCourse);
@@ -24,6 +28,8 @@ const App = () => (
             <Switch>
                 <Route exact path='/' render={() => <Redirect to='/courses' /> } /> 
                 <Route exact path='/courses' component={CoursesWithContext} />
+                <Route path='/signup' component={UserSignUpWithContext} />
+                <Route path='/signin' component={UserSignInWithContext} />
                 <Route path='/courses/create' component={CreateCourseWithContext} />
                 <Route exact path='/courses/:id' render={({match}) => <CourseDetailWithContext match={match} /> }/>
                 <Route path='/courses/:id/update' render={({match}) => <UpdateCourseWithContext match={match} /> } />
