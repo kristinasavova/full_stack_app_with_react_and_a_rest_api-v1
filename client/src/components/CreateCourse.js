@@ -1,4 +1,5 @@
 import React, { Component } from 'react'; 
+import { withRouter } from 'react-router-dom';
 import Form from './Form';
 
 class CreateCourse extends Component {
@@ -26,16 +27,16 @@ class CreateCourse extends Component {
 
     submit = () => {
         const { title, description, estimatedTime, materialsNeeded } = this.state;
+        const { authenticatedUser, password } = this.props.context;
         /* This course object is going to be passed to the createCourse method. */
         const course = { title, description, estimatedTime, materialsNeeded };
-        this.props.context.data.createCourse (course)
+        this.props.context.data.createCourse (course, authenticatedUser.username, password)
             /* Check if there are items in the array (validation errors?) returned by Promise */
             .then (errors => {
-                if (errors.length) {
+                if (errors) {
                     this.setState ({ errors });
                 } else {
-                    console.log ('Course is successfully created!');
-                    this.props.history.push ('/courses') // redirect to the newly created course?
+                    this.props.history.push ('/'); // redirect to the newly created course?
                 }
             })
             /* Handle rejected Promises. */
@@ -122,4 +123,4 @@ class CreateCourse extends Component {
     };
 };
 
-export default CreateCourse; 
+export default withRouter (CreateCourse); 

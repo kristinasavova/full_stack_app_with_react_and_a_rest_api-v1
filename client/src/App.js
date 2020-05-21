@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'; 
 import withContext from './Context'; 
-import PrivateRoute from './PrivateRoute';
+// import PrivateRoute from './PrivateRoute';
 
 /* Import components. */
 import Header from './components/Header';
@@ -35,9 +35,9 @@ const App = () => (
                 <Route path='/signup' component={UserSignUpWithContext} />
                 <Route path='/signin' component={UserSignInWithContext} />
                 <Route path='/signout' component={UserSignOutWithContext} />
-                <PrivateRoute path='/courses/create' component={CreateCourseWithContext} />
+                <Route path='/courses/create' component={CreateCourseWithContext} />
                 <Route exact path='/courses/:id' render={({match}) => <CourseDetailWithContext match={match} /> }/>
-                <PrivateRoute path='/courses/:id/update' render={({match}) => <UpdateCourseWithContext match={match} /> } />
+                <Route path='/courses/:id/update' render={({match}) => <UpdateCourseWithContext match={match} /> } />
                 <Route path='/error' component={Error} />
                 <Route path='/notfound' component={NotFound} />
                 <Route component={NotFound} />

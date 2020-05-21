@@ -84,11 +84,13 @@ export default class Data {
     };
 
     /**
-     * A method to makes a GET req to the /courses/:id endpoint to obtain a course
-     * @param {object} data - data of the new course 
+     * A method to makes a POST req to the /courses endpoint to create a new course
+     * @param {object} course - data of the new course 
+     * @param {string} username - user's email address
+     * @param {string} password - user's password
      */
-    async createCourse (data, username, password) {
-        const response = await this.api ('/courses', 'POST', data, true, { username, password }); 
+    async createCourse (course, username, password) {
+        const response = await this.api ('/courses', 'POST', course, true, { username, password }); 
         if (response.status === 201) {
             return [];
         } else if (response.status === 400) {
@@ -98,5 +100,23 @@ export default class Data {
         } else {
             throw new Error ();
         }
-    }
+    };
+
+    /**
+     * A method to makes a PUT req to the /courses/:id endpoint to update a course
+     * @param {integer} ID - ID of the course to update
+     * @param {object} course - data of the updated course 
+     * @param {string} username - user's email address
+     * @param {string} password - user's password
+     */
+    async updateCourse (ID, course, username, password) {
+        const response = await this.api (`/courses/${ID}`, 'PUT', course, true, { username, password });
+        if (response.status === 204) {
+            return [];
+        } else if (response.status === 400) {
+            return response.json ().then (data => { return data.errors });
+        } else if (response.status === 404) {
+            return response.json ().then (data => { return data.message });
+        }
+    };
 };

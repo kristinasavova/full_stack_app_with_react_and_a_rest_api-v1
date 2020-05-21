@@ -5,7 +5,7 @@ class Header extends Component {
 
     render () { 
         const { context } = this.props; 
-        const authUser  = context.authenticatedUser; 
+        const { authenticatedUser }  = context; 
         return (
             <React.Fragment>
                 <div className="header">
@@ -13,9 +13,9 @@ class Header extends Component {
                         <h1 className="header--logo">Courses</h1>
                         <nav>
                             {
-                                authUser ?
+                                authenticatedUser ?
                                     <React.Fragment>
-                                        <span>Welcome {authUser.firstName}!</span>
+                                        <span>Welcome {authenticatedUser.firstName}!</span>
                                         <Link to='/signout' className="signout">Sign Out</Link>
                                     </React.Fragment> :
                                     <React.Fragment>
