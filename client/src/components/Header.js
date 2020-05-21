@@ -1,16 +1,28 @@
 import React, { Component } from 'react'; 
+import { Link } from 'react-router-dom';
 
 class Header extends Component {
 
     render () { 
+        const { context } = this.props; 
+        const authUser  = context.authenticatedUser; 
         return (
             <React.Fragment>
                 <div className="header">
                     <div className="bounds">
                         <h1 className="header--logo">Courses</h1>
                         <nav>
-                            <span>Welcome Luna!</span>
-                            <a className="signout" href="index.html">Sign Out</a>
+                            {
+                                authUser ?
+                                    <React.Fragment>
+                                        <span>Welcome {authUser.firstName}!</span>
+                                        <Link to='/signout' className="signout">Sign Out</Link>
+                                    </React.Fragment> :
+                                    <React.Fragment>
+                                        <Link to='/signup'>Sign Up</Link>
+                                        <Link to='/signin'>Sign In</Link>
+                                    </React.Fragment>
+                            }
                         </nav>
                     </div>
                 </div>

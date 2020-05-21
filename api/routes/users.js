@@ -43,6 +43,18 @@ router.post ('/users', [
     check ('password')
         .exists ({ checkFalsy: true, checkNull: true })
         .withMessage ('Please provide a value for "Password"')
+        .isLength ({ min: 5, max: 20 })
+        .withMessage ('Please provide a value for "password" that is between 5 and 20 characters in length'),
+    // Validate that the password and confirmPassword fields values match
+    check ('confirmPassword')
+        .exists ({ checkFalsy: true, checkNull: true })
+        .withMessage ('Please provide a value for "confirmPassword"')
+        .custom ( (value, { req }) => {
+            if (value && req.body.password && value !== req.body.password) {
+                throw new Error ('Please provide values for "password" and "confirmPassword" that match');
+            }
+            return true; 
+        })
 ], async (req, res, next) => {
     // Attempt to get the validation result from the request object
     const errors = validationResult (req); 

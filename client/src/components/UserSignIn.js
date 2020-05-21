@@ -19,7 +19,26 @@ class UserSignIn extends Component {
     };
 
     submit = () => {
-
+        const { emailAddress, password } = this.state;
+        /* The from variable contains info about the pathname an unauthenticated user redirected from (via this.props.location.state). 
+        For example, if user redirects to the sign in page from /settings, from will be equal to pathname: "/settings". 
+        If user submits the form without previously visiting a protected route, he will be navigated to /courses by default. */
+        const { from } = this.props.location.state || { from: { pathname: '/courses' }};
+        this.props.context.actions.signIn (emailAddress, password) 
+            .then (user => {
+                if (user === null) {
+                    this.setState ( () => {
+                        return { errors: [ 'Sign-in was unsuccessful' ]};
+                    });
+                } else {
+                    this.props.history.push (from); 
+                    console.log (`SUCCESS! ${emailAddress} is now signed in!`);
+                }
+            })
+            .catch (error => {
+                console.log (error);
+                this.props.history.push ('/error'); 
+            });
     };
 
     cancel = () => {
@@ -62,9 +81,7 @@ class UserSignIn extends Component {
                         </React.Fragment>
                     )} />
                     <p>&nbsp;</p>
-                    <p>Don't have a user account?
-                        <Link to='/signup'>Click here</Link> to sign up!
-                    </p>
+                    <p>Don't have a user account? <Link to='/signup'>Click here</Link> to sign up!</p>
                 </div>
             </div>
         );

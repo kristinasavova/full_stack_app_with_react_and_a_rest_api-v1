@@ -1,9 +1,9 @@
 import React, { Component } from 'react'; 
+import Form from './Form';
 
 class UpdateCourse extends Component {
 
-    cancel = event => {
-        event.preventDefault (); 
+    cancel = () => { 
         this.props.history.push (`/courses/${this.props.match.params.id}`);
     };
 
@@ -11,9 +11,11 @@ class UpdateCourse extends Component {
         return (
             <div className="bounds course--detail">
                 <h1>Update Course</h1>
-                <div>
-                    <form 
-                        cancel={this.cancel}>
+                <Form 
+                    cancel={this.cancel}
+                    submitButtonText='Update Course'
+                    elements={ () => (    // render prop technique
+                        <React.Fragment>
                         <div className="grid-66">
                             <div className="course--header">
                                 <h4 className="course--label">Course</h4>
@@ -23,8 +25,7 @@ class UpdateCourse extends Component {
                                         name="title" 
                                         type="text" 
                                         className="input-title course--title--input" 
-                                        placeholder="Course title..."
-                                        value="Build a Basic Bookcase" />
+                                        placeholder="Course title..." />
                                 </div>
                                 <p>By Joe Smith</p>
                             </div>
@@ -66,17 +67,14 @@ class UpdateCourse extends Component {
                                         </div>
                                     </li>
                                 </ul>
-                            </div>
-                        </div>
-                        <div className="grid-100 pad-bottom">
-                            <button className="button" type="submit">Update Course</button>
-                            <button className="button button-secondary">Cancel</button> 
-                        </div>
-                    </form>
-                </div>
+                            </div> 
+                        </div> 
+                        </React.Fragment>
+                    )}
+                /> 
             </div>
         );
-    }
+    };
 };
 
 export default UpdateCourse;

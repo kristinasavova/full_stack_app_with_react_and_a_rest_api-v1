@@ -38,7 +38,7 @@ class UserSignUp extends Component {
                 } else {
                     console.log (`${firstName} ${lastName} is successfully signed up and authenticated!`);
                     context.actions.signIn (emailAddress, password)
-                        then ( () => {
+                        .then ( () => {
                             this.props.history.push ('/');
                         })
                 }
@@ -111,9 +111,7 @@ class UserSignUp extends Component {
                         </React.Fragment>
                     )} />
                     <p>&nbsp;</p>
-                    <p>Already have a user account?
-                        <Link to='/signin'>Click here</Link> to sign in!
-                    </p>
+                    <p>Already have a user account? <Link to='/signin'>Click here</Link> to sign in!</p>
                 </div>
             </div>
         );

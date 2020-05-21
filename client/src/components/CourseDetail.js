@@ -1,13 +1,7 @@
 import React, { Component } from 'react';  
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types'; 
+import { Link, withRouter } from 'react-router-dom';
 
 class CourseDetail extends Component {
-
-    static propTypes = {
-        match: PropTypes.object.isRequired,
-        context: PropTypes.object.isRequired
-    };
 
     state = {
         course: {}
@@ -16,23 +10,18 @@ class CourseDetail extends Component {
     componentDidMount () { 
         this.props.context.data.getCourse (this.props.match.params.id)
             .then (course => {
-                this.setState ( () => {
-                    return { course };
-                });
-            })
-            .catch (error => console.log (error));
-    };
-
-    componentDidUpdate (prevProps) {
-        if (this.props.match.params.id !== prevProps.match.params.id) {
-            this.props.context.data.getCourse (this.props.match.params.id)
-                .then (course => {
+                if (course) {
                     this.setState ( () => {
                         return { course };
                     });
-                })
-                .catch (error => console.log (error)); 
-        }
+                } else {
+                    this.props.history.push ('/notfound'); 
+                }
+            })
+            .catch (error => {
+                console.log (error);
+                this.props.history.push ('/error'); 
+            });
     };
 
     render () {
@@ -84,4 +73,4 @@ class CourseDetail extends Component {
     }
 };
 
-export default CourseDetail; 
+export default withRouter (CourseDetail); 
