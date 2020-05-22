@@ -121,7 +121,7 @@ router.put ('/courses/:id', authenticateUser, [
                 res.status (403). json ({ message: 'Access to the requested resource is forbidden' });
             }
         } else {
-            res.status (404).json ({ message: 'Course not found '});
+            res.status (404).json ({ message: 'Course not found' });
         }
     } catch (error) {
         if (error.name = 'SequelizeValidationError') {
@@ -146,7 +146,7 @@ router.delete ('/courses/:id', authenticateUser, asyncHandler ( async (req, res,
             res.status (403). json ({ message: 'Access to the requested resource is forbidden' });
         } 
     } else {
-        next (error); 
+        next (error);  
     }
 }));
 

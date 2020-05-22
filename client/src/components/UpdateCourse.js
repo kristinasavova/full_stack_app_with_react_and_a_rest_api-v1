@@ -5,37 +5,63 @@ import Form from './Form';
 class UpdateCourse extends Component {
 
     state = {
-        title: '',
-        description: '',
-        estimatedTime: '',
-        materialsNeeded: '',
+        course: {
+            userId: this.props.context.authUser.id,
+            title: '',
+            description: '',
+            estimatedTime: '',
+            materialsNeeded: ''
+        },
         errors: []
+    };
+
+    componentDidMount () {
+        this.props.context.data.getCourse (this.props.match.params.id)
+            .then (course => {
+                if (course === null) {
+                    this.props.history.push ('/notfound');
+                } else {
+                    this.setState ( prevState => ({
+                        course: { ...prevState.course,
+                            title: course.title,
+                            description: course.description,
+                            estimatedTime: course.estimatedTime,
+                            materialsNeeded: course.materialsNeeded
+                        }}
+                    ));
+                }
+            })
+            .catch (error => {
+                console.log (error);
+                this.props.history.push ('/error'); 
+            });
     };
 
     cancel = () => { 
         this.props.history.push (`/courses/${this.props.match.params.id}`);
     };
 
+    /* When used on a HTML element, ref takes a callback func that receives the underlying DOM element as it's argument. */
     change = event => {
-        const name = event.target.name;
         const value = event.target.value;
-        this.setState ( () => {
-            return { [name]: value };
-        });
+        const name = event.target.name;
+        this.setState ( prevState => ({
+            course: { ...prevState.course, [name]: value }
+        }));
     };
 
     submit = () => {
-        const { title, description, estimatedTime, materialsNeeded } = this.state;
-        const { authenticatedUser, password } = this.props.context;
-        /* This course object is going to be passed to the updateCourse method. */
-        const course = { title, description, estimatedTime, materialsNeeded };
-        this.props.context.data.updateCourse (course, authenticatedUser.username, password)
+        const courseID = this.props.match.params.id; 
+        const { course } = this.state;
+        const { username } = this.props.context.authUser;
+        const { password } = this.props.context;
+        this.props.context.data.updateCourse (courseID, course, username, password)
             /* Check if there are items in the array (validation errors?) returned by Promise */
             .then (errors => {
                 if (errors) {
-                    this.setState ({ errors });
+                    this.setState ({ errors }); 
                 } else {
-                    this.props.history.push ('/courses/${this.props.match.params.id}');  
+                    this.props.history.push (`/courses/${this.props.match.params.id}`);  
                 }
             })
             /* Handle rejected Promises. */
@@ -47,8 +73,8 @@ class UpdateCourse extends Component {
 
     render () {
 
-        const { title, description, estimatedTime, materialsNeeded, errors } = this.state;
-        const { authenticatedUser } = this.props.context; 
+        const { title, description, estimatedTime, materialsNeeded } = this.state.course;
+        const { firstName, lastName } = this.props.context.authUser; 
 
         return (
             <div className="bounds course--detail">
@@ -57,7 +83,7 @@ class UpdateCourse extends Component {
                     cancel={this.cancel}
                     submit={this.submit}
                     submitButtonText='Update Course'
-                    errors={errors}
+                    errors={this.state.errors}
                     elements={ () => (    // render prop technique
                         <React.Fragment>
                         <div className="grid-66">
@@ -68,23 +94,23 @@ class UpdateCourse extends Component {
                                         id="title" 
                                         name="title" 
                                         type="text" 
-                                        value={title}
+                                        defaultValue={title}
                                         onChange={this.change}
+                                        ref={input => this.query = input}
                                         className="input-title course--title--input" 
                                         placeholder="Course title..." />
                                 </div>
-                                <p>By {authenticatedUser.firstName} {authenticatedUser.lastName}</p>
+                                <p>By {firstName} {lastName}</p>
                             </div>
                             <div className="course--description">
                                 <div>
                                     <textarea 
                                         id="description" 
                                         name="description" 
-                                        value={description}
+                                        defaultValue={description}
                                         onChange={this.change}
-                                        placeholder="Course description..." >
-                                        Blablabla
-                                    </textarea>
+                                        ref={input => this.query = input}
+                                        placeholder="Course description..." /> 
                                 </div>
                             </div>
                         </div>
@@ -98,8 +124,9 @@ class UpdateCourse extends Component {
                                                 id="estimatedTime" 
                                                 name="estimatedTime" 
                                                 type="text" 
-                                                value={estimatedTime}
+                                                defaultValue={estimatedTime}
                                                 onChange={this.change}
+                                                ref={input => this.query = input}
                                                 className="course--time--input"
                                                 placeholder="Hours" />
                                         </div>
@@ -110,11 +137,10 @@ class UpdateCourse extends Component {
                                             <textarea 
                                                 id="materialsNeeded" 
                                                 name="materialsNeeded" 
-                                                value={materialsNeeded}
+                                                defaultValue={materialsNeeded}
                                                 onChange={this.change}
-                                                placeholder="List materials..." >
-                                                Blablabla
-                                            </textarea>
+                                                ref={input => this.query = input}
+                                                placeholder="List materials..." />
                                         </div>
                                     </li>
                                 </ul>

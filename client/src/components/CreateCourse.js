@@ -27,16 +27,17 @@ class CreateCourse extends Component {
 
     submit = () => {
         const { title, description, estimatedTime, materialsNeeded } = this.state;
-        const { authenticatedUser, password } = this.props.context;
+        const { authUser, password } = this.props.context;
+        const userId = authUser.id; 
         /* This course object is going to be passed to the createCourse method. */
-        const course = { title, description, estimatedTime, materialsNeeded };
-        this.props.context.data.createCourse (course, authenticatedUser.username, password)
+        const course = { userId, title, description, estimatedTime, materialsNeeded };
+        this.props.context.data.createCourse (course, authUser.username, password)
             /* Check if there are items in the array (validation errors?) returned by Promise */
             .then (errors => {
                 if (errors) {
                     this.setState ({ errors });
                 } else {
-                    this.props.history.push ('/'); // redirect to the newly created course?
+                    this.props.history.push ('/courses'); 
                 }
             })
             /* Handle rejected Promises. */
@@ -49,6 +50,7 @@ class CreateCourse extends Component {
     render () {
 
         const { title, description, estimatedTime, materialsNeeded, errors } = this.state;
+        const { firstName, lastName } = this.props.context.authUser;
 
         return (
             <div className="bounds course--detail">
@@ -73,7 +75,7 @@ class CreateCourse extends Component {
                                         className="input-title course--title--input" 
                                         placeholder="Course title..." />
                                 </div>
-                                <p>By Teacher</p>
+                                <p>By {firstName} {lastName}</p>
                             </div>
                             <div className="course--description">
                                 <div>

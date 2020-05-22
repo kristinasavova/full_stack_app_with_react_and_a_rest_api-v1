@@ -4,7 +4,7 @@ import Data from './Data';
 
 /* Context is used when data needs to be accessible by many components at different nesting levels. 
 Context lets you pass data through the component tree without having to pass props down manually at every level. */
-const Context = React.createContext ();
+export const Context = React.createContext ();
 
 export class Provider extends Component {
 
@@ -12,7 +12,7 @@ export class Provider extends Component {
         super ();
         this.data = new Data ();
         this.state = { 
-            authenticatedUser: Cookies.getJSON ('authenticatedUser') || null,
+            authUser: Cookies.getJSON ('authUser') || null,
             password: Cookies.getJSON ('password') || null 
         };
     };
@@ -22,12 +22,12 @@ export class Provider extends Component {
         const user = await this.data.getUser (username, password);
         if (user !== null) {
             this.setState ( () => {
-                return { authenticatedUser: user, password };
+                return { authUser: user, password };
             });
             /* Create a cookie that stores the authenticated user's data. The first argument specifies the name of the cookie to set, 
             the second one specifies the value to store. The last argument sets additional cookie options -- for example, an expiration. 
             The value 1, for example, creates a cookie that expires 1 day from now. */
-            Cookies.set ('authenticatedUser', JSON.stringify (user), { expires: 1 });
+            Cookies.set ('authUser', JSON.stringify (user), { expires: 1 });
             Cookies.set ('password', JSON.stringify (password), { expires: 1 });
         }
         return { user, password }; 
@@ -36,18 +36,18 @@ export class Provider extends Component {
     signOut = () => {
         /* Remove the name and username properties from state – the user is no longer authenticated. */
         this.setState ( () => {
-            return { authenticatedUser: null, password: null };
+            return { authUser: null, password: null };
         });
         /* Delete the authenticatedUser cookie when a user signs out. */
-        Cookies.remove ('authenticatedUser'); 
+        Cookies.remove ('authUser'); 
         Cookies.remove ('password'); 
     };
 
     render () {
-        const { authenticatedUser, password } = this.state;
+        const { authUser, password } = this.state;
         /* Value represents an object containing the context to be shared throughout the component tree. */
         const value = { 
-            authenticatedUser, 
+            authUser, 
             password,
             data: this.data,
             actions: { 

@@ -20,7 +20,7 @@ class Courses extends Component {
                 this.props.history.push ('/error');
             });
     };
-    
+
     render () {
         
         const { courses } = this.state; 

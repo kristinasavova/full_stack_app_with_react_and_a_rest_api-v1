@@ -1,11 +1,10 @@
-import React, { Component } from 'react'; 
+import React from 'react'; 
 import { Link } from 'react-router-dom';
 
-class Header extends Component {
+class Header extends React.PureComponent {
 
     render () { 
-        const { context } = this.props; 
-        const { authenticatedUser }  = context; 
+        const { authUser }  = this.props.context; 
         return (
             <React.Fragment>
                 <div className="header">
@@ -13,9 +12,9 @@ class Header extends Component {
                         <h1 className="header--logo">Courses</h1>
                         <nav>
                             {
-                                authenticatedUser ?
+                                authUser ?
                                     <React.Fragment>
-                                        <span>Welcome {authenticatedUser.firstName}!</span>
+                                        <span>Welcome {authUser.firstName}!</span>
                                         <Link to='/signout' className="signout">Sign Out</Link>
                                     </React.Fragment> :
                                     <React.Fragment>

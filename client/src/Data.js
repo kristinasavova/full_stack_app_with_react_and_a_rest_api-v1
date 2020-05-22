@@ -21,6 +21,7 @@ export default class Data {
             /* Set an Authorization header on each req that requires authentication by adding an Authorization property to the headers object. */
             options.headers['Authorization'] = `Basic ${encodedCredentials}`; 
         }
+
         /* An optional second parameter: a configuration object that lets control a number of different settings that can be applied to the req. */
         return fetch (URL, options); 
     }
@@ -35,7 +36,7 @@ export default class Data {
         if (response.status === 200) {
             return response.json ().then (data => data); 
         } else if (response.status === 401) {
-            return null;
+            return [];
         } else {
             throw new Error ();
         }
@@ -77,7 +78,7 @@ export default class Data {
         if (response.status === 200) {
             return response.json ().then (data => data);
         } else if (response.status === 404) {
-            return response.json ().then (data => { return data.errors });
+            return null;
         } else {
             throw new Error (); 
         }
@@ -95,8 +96,6 @@ export default class Data {
             return [];
         } else if (response.status === 400) {
             return response.json ().then (data => { return data.errors });
-        } else if (response.status === 401) {
-            return null;
         } else {
             throw new Error ();
         }
@@ -115,8 +114,25 @@ export default class Data {
             return [];
         } else if (response.status === 400) {
             return response.json ().then (data => { return data.errors });
-        } else if (response.status === 404) {
-            return response.json ().then (data => { return data.message });
+        } else {
+            throw new Error ();
         }
     };
+
+    /**
+     * A method to makes a DELETE req to the /courses/:id endpoint to delete a course
+     * @param {integer} ID - ID of the course to delete
+     * @param {string} username - user's email address
+     * @param {string} password - user's password
+     */
+    async deleteCourse (ID, username, password) {
+        const response = await this.api (`/courses/${ID}`, 'DELETE', null, true, { username, password });
+        if (response.status === 204) {
+            return [];
+        } else if (response.status === 403) {
+            return null;
+        } else {
+            throw new Error ();
+        }
+    }
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'; 
 import withContext from './Context'; 
-// import PrivateRoute from './PrivateRoute';
+import PrivateRoute from './PrivateRoute';
 
 /* Import components. */
 import Header from './components/Header';
@@ -13,6 +13,7 @@ import CourseDetail from './components/CourseDetail';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import Error from './components/Error';
+import Forbidden from './components/Forbidden';
 import NotFound from './components/NotFound';
 
 /* Connect the components to the context. */
@@ -35,10 +36,11 @@ const App = () => (
                 <Route path='/signup' component={UserSignUpWithContext} />
                 <Route path='/signin' component={UserSignInWithContext} />
                 <Route path='/signout' component={UserSignOutWithContext} />
-                <Route path='/courses/create' component={CreateCourseWithContext} />
+                <PrivateRoute path='/courses/create' component={CreateCourseWithContext} />
                 <Route exact path='/courses/:id' render={({match}) => <CourseDetailWithContext match={match} /> }/>
-                <Route path='/courses/:id/update' render={({match}) => <UpdateCourseWithContext match={match} /> } />
+                <PrivateRoute path='/courses/:id/update' component={({match}) => <UpdateCourseWithContext match={match} /> } />
                 <Route path='/error' component={Error} />
+                <Route path='/forbidden' component={Forbidden} />
                 <Route path='/notfound' component={NotFound} />
                 <Route component={NotFound} />
             </Switch>
