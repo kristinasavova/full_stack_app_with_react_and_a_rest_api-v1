@@ -30,28 +30,28 @@ router.get ('/users', authenticateUser, async (req, res) => {
 router.post ('/users', [
     check ('firstName')
         .exists ({ checkFalsy: true, checkNull: true })
-        .withMessage ('Please provide a value for "First Name"'),
+        .withMessage ('Please provide your first name'),
     check ('lastName')
         .exists ({ checkFalsy: true, checkNull: true })
-        .withMessage ('Please provide a value for "Last Name"'),
+        .withMessage ('Please provide your last name'),
     check ('emailAddress')
         .exists ({ checkFalsy: true, checkNull: true })
-        .withMessage ('Please provide a value for "Email Address"')
+        .withMessage ('Please provide your e-mail address')
         .isEmail ()
-        .withMessage ('Please provide a valid email address for "Email Address"')
+        .withMessage ('Must be a valid e-mail address')
         .normalizeEmail (),
     check ('password')
         .exists ({ checkFalsy: true, checkNull: true })
-        .withMessage ('Please provide a value for "Password"')
+        .withMessage ('Please provide a password')
         .isLength ({ min: 5, max: 20 })
-        .withMessage ('Please provide a value for "password" that is between 5 and 20 characters in length'),
+        .withMessage ('Password must be between 5 and 20 characters in length'),
     // Validate that the password and confirmPassword fields values match
     check ('confirmPassword')
         .exists ({ checkFalsy: true, checkNull: true })
-        .withMessage ('Please provide a value for "confirmPassword"')
+        .withMessage ('Please confirm your password')
         .custom ( (value, { req }) => {
             if (value && req.body.password && value !== req.body.password) {
-                throw new Error ('Please provide values for "password" and "confirmPassword" that match');
+                throw new Error ('Your password and confirmation password must match');
             }
             return true; 
         })
@@ -78,8 +78,8 @@ router.post ('/users', [
             console.log ('Validation failed', error);
             next (error); 
         } else if (error.name === 'SequelizeUniqueConstraintError') {
-            res.status (400).json ({ errors: 'Email address is already in use!' });
-            console.log ('Email address is already in use!', error);
+            res.status (400).json ({ errors: [ 'E-mail address is already in use' ] });
+            console.log ('E-mail address is already in use', error);
             next (error); 
         } else {
             next (error); 

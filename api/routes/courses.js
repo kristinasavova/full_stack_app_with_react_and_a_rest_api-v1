@@ -64,10 +64,10 @@ URI for the course and return no content with a status code 201. */
 router.post ('/courses', authenticateUser, [
     check ('title')
         .exists ({ checkNull: true, checkFalsy: true })
-        .withMessage ('Please provide a value for "title"'),
+        .withMessage ('Please provide a title for the course'),
     check ('description')
         .exists ({ checkNull: true, checkFalsy: true })
-        .withMessage ('Please provide a value for "description"')
+        .withMessage ('Please provide a short description for the course')
 ], asyncHandler ( async (req, res, next) => {
     const errors = validationResult (req); 
     if (!errors.isEmpty ()) {
@@ -86,8 +86,7 @@ router.post ('/courses', authenticateUser, [
         res.status (201).set ('Location', `/courses/${course.id}`). end ();  
     } catch (error) {
         if (error.name = 'SequelizeValidationError') {
-            res.status (400).json ({ errors: error.errors });
-            console.log ('Validation failed', error); 
+            res.status (400).json ({ errors: error.errors }); 
             next (error);
         } else {
             next (error); 
@@ -101,10 +100,10 @@ request has succeeded, but that the client doesn't need to go away from its curr
 router.put ('/courses/:id', authenticateUser, [
     check ('title')
         .exists ({ checkNull: true, checkFalsy: true })
-        .withMessage ('Please provide a value for "title"'),
+        .withMessage ('Please provide a title for the course'),
     check ('description')
         .exists ({ checkNull: true, checkFalsy: true })
-        .withMessage ('Please provide a value for "description"')
+        .withMessage ('Please provide a short description for the course')
 ], asyncHandler ( async (req, res, next) => {
     const errors = validationResult (req); 
     if (!errors.isEmpty ()) {
@@ -125,8 +124,7 @@ router.put ('/courses/:id', authenticateUser, [
         }
     } catch (error) {
         if (error.name = 'SequelizeValidationError') {
-            res.status (400).json ({ errors: error.errors });
-            console.log ('Validation failed', error); 
+            res.status (400).json ({ errors: error.errors }); 
             next (error);
         } else {
             next (error); 

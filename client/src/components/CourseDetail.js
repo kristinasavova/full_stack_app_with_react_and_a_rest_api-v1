@@ -1,5 +1,6 @@
 import React, { Component } from 'react';  
 import { Link, withRouter } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 
 class CourseDetail extends Component {
 
@@ -45,6 +46,8 @@ class CourseDetail extends Component {
         const { firstName, lastName } = this.state.teacher;
         const { authUser } = this.props.context;
         const { id } = this.props.match.params;
+
+        const markdownDescription = `_ ${description} _`;
         return (
             <div>
                 <div className="actions--bar">
@@ -67,7 +70,7 @@ class CourseDetail extends Component {
                             <p>By {firstName} {lastName}</p>
                         </div>
                         <div className="course--description">
-                            <p>{description}</p>
+                            <ReactMarkdown source={markdownDescription} />
                         </div>
                     </div>
                     <div className="grid-25 grid-right">

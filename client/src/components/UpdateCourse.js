@@ -16,10 +16,13 @@ class UpdateCourse extends Component {
     };
 
     componentDidMount () {
+        const { authUser } = this.props.context;
         this.props.context.data.getCourse (this.props.match.params.id)
             .then (course => {
                 if (course === null) {
                     this.props.history.push ('/notfound');
+                } else if (course.teacher.id !== authUser.id) {
+                    this.props.history.push ('/forbidden');
                 } else {
                     this.setState ( prevState => ({
                         course: { ...prevState.course,
@@ -43,8 +46,8 @@ class UpdateCourse extends Component {
 
     /* When used on a HTML element, ref takes a callback func that receives the underlying DOM element as it's argument. */
     change = event => {
-        const value = event.target.value;
         const name = event.target.name;
+        const value = this.query.value;
         this.setState ( prevState => ({
             course: { ...prevState.course, [name]: value }
         }));
