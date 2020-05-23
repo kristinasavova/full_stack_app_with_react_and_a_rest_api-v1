@@ -11,17 +11,17 @@ class Header extends React.PureComponent {
                     <div className="bounds">
                         <h1 className="header--logo">Courses</h1>
                         <nav>
-                            {
-                                authUser ?
-                                    <React.Fragment>
-                                        <span>Welcome {authUser.firstName}!</span>
-                                        <Link to='/signout' className="signout">Sign Out</Link>
-                                    </React.Fragment> :
-                                    <React.Fragment>
-                                        <Link to='/signup'>Sign Up</Link>
-                                        <Link to='/signin'>Sign In</Link>
-                                    </React.Fragment>
-                            }
+                        {/* Render buttons for signing in and signing up if there's no authenticated user 
+                        or the user's first and last name and a button for signing out if there's an authenticated user. */}
+                            { authUser ?
+                            <React.Fragment>
+                                <span>Welcome {authUser.firstName} {authUser.lastName}!</span>
+                                <Link to='/signout' className="signout">Sign Out</Link>
+                            </React.Fragment> :
+                            <React.Fragment>
+                                <Link to='/signup'>Sign Up</Link>
+                                <Link to='/signin'>Sign In</Link>
+                            </React.Fragment> }
                         </nav>
                     </div>
                 </div>

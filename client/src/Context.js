@@ -13,11 +13,41 @@ export class Provider extends Component {
         this.data = new Data ();
         this.state = { 
             authUser: Cookies.getJSON ('authUser') || null,
-            password: Cookies.getJSON ('password') || null
+            password: Cookies.getJSON ('password') || null,
+            courses: []
         };
     };
 
-    /* Use credentials to call the getUser method in Data.js. */
+    /**
+     * A method to retrieve courses and update state with obtained data
+     */
+    getCourses = async () => {
+        const courses = await this.data.getCourses ();
+        if (courses !== null) {
+            this.setState ( () => {
+                return { courses };
+            });
+        } else {
+            throw new Error ();
+        }
+    };
+
+    /**
+     * A method to delete a course
+     * @param {integer} ID - ID of the course to delete
+     * @param {string} username - user's email address
+     * @param {string} password - user's password
+     */
+    deleteCourse = async (ID, username, password) => {
+        await this.data.deleteCourse (ID, username, password);
+        await this.getCourses ();
+    };
+
+    /**
+     * A method to sign in a user using user's credentials 
+     * @param {string} username - user's email address
+     * @param {string} password - user's password
+     */
     signIn = async (username, password) => {
         const user = await this.data.getUser (username, password);
         if (user !== null) {
@@ -33,26 +63,30 @@ export class Provider extends Component {
         return { user, password }; 
     };
 
+    /**
+     * A method to remove the user from state and delete the authUser cookie when user signs out
+     */
     signOut = () => {
-        /* Remove the name and username properties from state – the user is no longer authenticated. */
         this.setState ( () => {
             return { authUser: null, password: null };
         });
-        /* Delete the authenticatedUser cookie when a user signs out. */
         Cookies.remove ('authUser'); 
         Cookies.remove ('password'); 
     };
 
     render () {
-        const { authUser, password } = this.state;
+        const { authUser, password, courses } = this.state;
         /* Value represents an object containing the context to be shared throughout the component tree. */
         const value = { 
             authUser, 
             password,
+            courses,
             data: this.data,
             actions: { 
                 signIn: this.signIn,
                 signOut: this.signOut,
+                getCourses: this.getCourses,
+                deleteCourse: this.deleteCourse
             }
         };
         

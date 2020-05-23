@@ -3,7 +3,15 @@ import config from './config';
 /* A helper class that provides utility methods to allow the React client to talk to the Express server. */
 export default class Data {
 
-    /* A method that makes the GET and POST requests to the REST API. */
+    /**
+     * A method that makes the GET, POST, UPDATE and DELETE requests to the REST API
+     * @param {string} path - an API endpoint 
+     * @param {string} method - HTTP method 
+     * @param {object} body - any data associated with the request 
+     * @param {boolean} requiresAuth - indicate if request requires authentication 
+     * @param {object} credentials - user's username and password 
+     * @returns {function} fetch () - a function to fetch data from the REST API 
+     */
     api (path, method = 'GET', body = null, requireAuth = false, credentials = null) {
         
         /* Configures the req path using the base URL defined in config.js, which gets passed to the returned fetch method */
@@ -36,7 +44,7 @@ export default class Data {
         if (response.status === 200) {
             return response.json ().then (data => data); 
         } else if (response.status === 401) {
-            return [];
+            return null;
         } else {
             throw new Error ();
         }

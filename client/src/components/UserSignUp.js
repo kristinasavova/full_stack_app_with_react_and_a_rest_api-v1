@@ -13,6 +13,10 @@ class UserSignUp extends Component {
         errors: []
     };
 
+    /**
+     * A method to retrieve values from the inputs and update state with retrieved values 
+     * @param {object} event
+     */
     change = event => {
         const name = event.target.name;
         const value = event.target.value;
@@ -21,23 +25,28 @@ class UserSignUp extends Component {
         });
     };
 
+    /**
+     * A method to cancel sign up  
+     * It changes the current URL to '/' and redirects user to another route
+     */
     cancel = () => {
         this.props.history.push ('/');
     };
 
+    /**
+     * A method to submit the form and sign up the user    
+     * It passes user's credentials to the createUser method of the context data 
+     */
     submit = () => {
-        /* Destructure props and state. */
-        const { context } = this.props;
         const { firstName, lastName, emailAddress, password, confirmPassword } = this.state;
         /* This user object will be passed to the createUser method. */
         const user = { firstName, lastName, emailAddress, password, confirmPassword };
-        context.data.createUser (user) 
+        this.props.context.data.createUser (user) 
             .then (errors => {
                 if (errors) {
                     this.setState ({ errors });
                 } else {
-                    console.log (`${firstName} ${lastName} is successfully signed up and authenticated!`);
-                    context.actions.signIn (emailAddress, password)
+                    this.props.context.actions.signIn (emailAddress, password)
                         .then ( () => {
                             this.props.history.push ('/');
                         })
@@ -51,7 +60,9 @@ class UserSignUp extends Component {
     };
 
     render () {
+
         const { firstName, lastName, emailAddress, password, confirmPassword, errors } = this.state;
+        
         return (
             <div className="bounds">
                 <div className="grid-33 centered signin">

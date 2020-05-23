@@ -5,34 +5,46 @@ import Form from './Form';
 class CreateCourse extends Component {
 
     state = {
-        title: '',
-        description: '',
-        estimatedTime: '',
-        materialsNeeded: '',
+        course: {
+            userId: this.props.context.authUser.id,
+            title: '',
+            description: '',
+            estimatedTime: '',
+            materialsNeeded: ''
+        },
         errors: []
     };
 
+    /**
+     * A method to retrieve values from the inputs and update state with retrieved values 
+     * @param {object} event
+     */
     change = event => {
         const name = event.target.name;
         const value = event.target.value;
-        this.setState ( () => {
-            return { [name]: value };
-        });
+        this.setState ( prevState => ({
+            course: { ...prevState.course, [name]: value }
+        }));
     };
 
+    /**
+     * A method to cancel creating of the course   
+     * It changes the current URL to '/' and redirects user to another route
+     */
     cancel = () => {
-         /* Change the current URL from '/courses/create' to '/' - redirect user to another route. */
         this.props.history.push ('/');
     };
 
+    /**
+     * A method to submit the form and create a new course   
+     * It passes a new course object to the createCourse method of the context data
+     */
     submit = () => {
-        const { title, description, estimatedTime, materialsNeeded } = this.state;
-        const { authUser, password } = this.props.context;
-        const userId = authUser.id; 
-        /* This course object is going to be passed to the createCourse method. */
-        const course = { userId, title, description, estimatedTime, materialsNeeded };
-        this.props.context.data.createCourse (course, authUser.username, password)
-            /* Check if there are items in the array (validation errors?) returned by Promise */
+        const { course } = this.state;
+        const { username } = this.props.context.authUser;
+        const { password } = this.props.context;
+        this.props.context.data.createCourse (course, username, password)
+            /* Check if there are items in the array (validation errors?) returned by Promise. */
             .then (errors => {
                 if (errors) {
                     this.setState ({ errors });
@@ -49,14 +61,14 @@ class CreateCourse extends Component {
 
     render () {
 
-        const { title, description, estimatedTime, materialsNeeded, errors } = this.state;
+        const { title, description, estimatedTime, materialsNeeded } = this.state.course;
         const { firstName, lastName } = this.props.context.authUser;
 
         return (
             <div className="bounds course--detail">
                 <h1>Create Course</h1>
                 <Form
-                    errors={errors}
+                    errors={this.state.errors}
                     cancel={this.cancel}
                     submit={this.submit}
                     submitButtonText='Create Course'

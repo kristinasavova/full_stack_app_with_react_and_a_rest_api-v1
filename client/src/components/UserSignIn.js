@@ -10,6 +10,10 @@ class UserSignIn extends Component {
         errors: []
     };
 
+    /**
+     * A method to retrieve values from the inputs and update state with retrieved values 
+     * @param {object} event
+     */
     change = event => {
         const name = event.target.name;
         const value = event.target.value;
@@ -18,6 +22,10 @@ class UserSignIn extends Component {
         });
     };
 
+    /**
+     * A method to submit the form and sign in the user    
+     * It passes user's credentials to the signIn method of the context 
+     */
     submit = () => {
         const { emailAddress, password } = this.state;
         /* The from variable contains info about the pathname an unauthenticated user redirected from (via this.props.location.state). 
@@ -25,14 +33,13 @@ class UserSignIn extends Component {
         If user submits the form without previously visiting a protected route, he will be navigated to /courses by default. */
         const { from } = this.props.location.state || { from: { pathname: '/courses' }};
         this.props.context.actions.signIn (emailAddress, password) 
-            .then (user => {
-                if (user === null) {
+            .then ( () => {
+                if (this.props.context.authUser === null) {
                     this.setState ( () => {
-                        return { errors: [ 'Sign-in was unsuccessful' ]};
+                        return { errors: [ 'Sorry, the e-mail and password you entered do not match. Please try again.' ] };
                     });
                 } else {
                     this.props.history.push (from); 
-                    console.log (`SUCCESS! ${emailAddress} is now signed in!`);
                 }
             })
             .catch (error => {
@@ -41,6 +48,10 @@ class UserSignIn extends Component {
             });
     };
 
+    /**
+     * A method to cancel sign in  
+     * It changes the current URL to '/' and redirects user to another route
+     */
     cancel = () => {
         this.props.history.push ('/'); 
     };
@@ -48,7 +59,7 @@ class UserSignIn extends Component {
     render () {
 
         const { emailAddress, password, errors } = this.state; 
-
+        
         return (
             <div className="bounds">
                 <div className="grid-33 centered signin">
@@ -62,6 +73,7 @@ class UserSignIn extends Component {
                         <React.Fragment>
                             <div>
                                 <input 
+                                    required
                                     id="emailAddress" 
                                     name="emailAddress" 
                                     type="text" 
@@ -71,6 +83,7 @@ class UserSignIn extends Component {
                             </div>
                             <div>
                                 <input 
+                                    required
                                     id="password" 
                                     name="password" 
                                     type="password" 

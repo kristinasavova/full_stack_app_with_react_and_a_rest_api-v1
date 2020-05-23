@@ -12,6 +12,7 @@ class CourseDetail extends Component {
     componentDidMount () { 
         this.props.context.data.getCourse (this.props.match.params.id)
             .then (course => {
+                /* Redirects to /notfound if the requested course isn't returned from the REST API. */
                 if (course === null) {
                     this.props.history.push ('/notfound');
                 } else {
@@ -26,13 +27,13 @@ class CourseDetail extends Component {
             });
     };
 
+    /**
+     * A method to delete a course
+     */
     delete = () => {
         const { authUser, password } = this.props.context;
         const courseID = this.props.match.params.id; 
-        this.props.context.data.deleteCourse (courseID, authUser.username, password)
-            .then ( () => {
-                console.log ('Course is successfully deleted!');
-            })
+        this.props.context.actions.deleteCourse (courseID, authUser.username, password)
             .catch (error => {
                 console.log (error);
                 this.props.history.push ('/error');
@@ -40,11 +41,11 @@ class CourseDetail extends Component {
     };
 
     render () {
+
         const { title, description, estimatedTime, materialsNeeded } = this.state.course;
         const { firstName, lastName } = this.state.teacher;
         const { authUser } = this.props.context;
         const { id } = this.props.match.params;
-
         const markdownDescription = `${description}`;
         const markdownMaterialsNeeded = `${materialsNeeded}`;
 
@@ -53,6 +54,8 @@ class CourseDetail extends Component {
                 <div className="actions--bar">
                     <div className="bounds">
                         <div className="grid-100">
+                            { /* Renders the "Update" and "Delete" buttons only if: there's is authenticated 
+                            user and user's ID matches that of the user who owns the course. */ }
                             { authUser && authUser.id === this.state.teacher.id ? 
                                 <span>
                                     <Link to={`/courses/${id}/update`} className="button">Update Course</Link>

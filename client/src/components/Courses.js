@@ -4,35 +4,33 @@ import Course from './Course';
 
 class Courses extends Component {
 
-    state = {
-        courses: []
-    };
-
     componentDidMount () {
-        this.props.context.data.getCourses ()
-            .then (courses => {
-                this.setState ( () => {
-                    return { courses };
-                });   
-            })
+        this.props.context.actions.getCourses ()
             .catch (error => {
                 console.log (error);
                 this.props.history.push ('/error');
             });
     };
 
-    render () {
-        
-        const { courses } = this.state; 
-        let courseList;
-        if (courses.length) {
-            courseList = courses.map (course => 
-                <Course key={course.id} title={course.title} id={course.id} /> ); 
-        } 
+    componentDidUpdate (prevProps) {
+            if (prevProps.context.courses.length !== this.props.context.courses.length) {
+                this.props.context.actions.getCourses ()
+                    .catch (error => {
+                        console.log (error);
+                        this.props.history.push ('/error'); 
+                    });
+            } 
+    };
 
+    render () {
+
+        const { courses } = this.props.context;
         return (
             <div className="bounds">
-                { courseList }
+                { courses.length ? 
+                    courses.map (course => 
+                        <Course key={course.id} title={course.title} id={course.id} />) : null 
+                }
                 <div className="grid-33">
                     <Link className="course--module course--add--module" to="/courses/create">
                         <h3 className="course--add--title">

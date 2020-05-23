@@ -19,8 +19,10 @@ class UpdateCourse extends Component {
         const { authUser } = this.props.context;
         this.props.context.data.getCourse (this.props.match.params.id)
             .then (course => {
+                /* Redirect to /notfound if the requested course isn't returned from the REST API. */
                 if (course === null) {
                     this.props.history.push ('/notfound');
+                /* Redirect to /forbidden if the requested course isn't owned by the authenticated user. */
                 } else if (course.teacher.id !== authUser.id) {
                     this.props.history.push ('/forbidden');
                 } else {
@@ -34,17 +36,26 @@ class UpdateCourse extends Component {
                     ));
                 }
             })
+            /* Redirect to /error if there is a server error. */
             .catch (error => {
                 console.log (error);
                 this.props.history.push ('/error'); 
             });
     };
 
+    /**
+     * A method to cancel updating the course   
+     * It changes the current URL to '/courses/:id' and redirects user to another route
+     */
     cancel = () => { 
         this.props.history.push (`/courses/${this.props.match.params.id}`);
     };
 
-    /* When used on a HTML element, ref takes a callback func that receives the underlying DOM element as it's argument. */
+    /**
+     * A method to retrieve values from the inputs and update state with retrieved values 
+     * Ref takes a callback func that receives the underlying DOM element as it's argument
+     * @param {object} event
+     */
     change = event => {
         const name = event.target.name;
         const value = event.target.value;
@@ -53,13 +64,17 @@ class UpdateCourse extends Component {
         }));
     };
 
+    /**
+     * A method to submit the form and update the course   
+     * It passes a new course object to the updateCourse method of the context data
+     */
     submit = () => {
         const courseID = this.props.match.params.id; 
         const { course } = this.state;
         const { username } = this.props.context.authUser;
         const { password } = this.props.context;
         this.props.context.data.updateCourse (courseID, course, username, password)
-            /* Check if there are items in the array (validation errors?) returned by Promise */
+            /* Check if there are items in the array (validation errors?) returned by Promise. */
             .then (errors => {
                 if (errors) {
                     this.setState ({ errors }); 

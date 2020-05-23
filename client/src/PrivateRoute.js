@@ -2,6 +2,13 @@ import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { Context } from './Context';
 
+/**
+ * A higher-order component for any routes that should be protected and accessible to authenticated users only 
+ * The component will either allow the user to continue to the specified private component, or redirect them to /signin 
+ * @param {object} component - a React component
+ * @param {*} ...otherProps - all the props of the component 
+ * @returns {function} - a higher-order component
+ */
 const PrivateRoute = ({ component: Component, ...otherProps }) => {
     const authUser = useContext (Context).authUser;
     return (
