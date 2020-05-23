@@ -29,16 +29,14 @@ class CourseDetail extends Component {
     delete = () => {
         const { authUser, password } = this.props.context;
         const courseID = this.props.match.params.id; 
-        if (window.confirm ('Do you want to delete the course?')) {
-            this.props.context.data.deleteCourse (courseID, authUser.username, password)
-                .then ( () => {
-                    this.props.history.push ('/courses');
-                })
-                .catch (error => {
-                    console.log (error);
-                    this.props.history.push ('/error');
-                });
-        }
+        this.props.context.data.deleteCourse (courseID, authUser.username, password)
+            .then ( () => {
+                console.log ('Course is successfully deleted!');
+            })
+            .catch (error => {
+                console.log (error);
+                this.props.history.push ('/error');
+            });
     };
 
     render () {
@@ -47,7 +45,9 @@ class CourseDetail extends Component {
         const { authUser } = this.props.context;
         const { id } = this.props.match.params;
 
-        const markdownDescription = `_ ${description} _`;
+        const markdownDescription = `${description}`;
+        const markdownMaterialsNeeded = `${materialsNeeded}`;
+
         return (
             <div>
                 <div className="actions--bar">
@@ -82,9 +82,7 @@ class CourseDetail extends Component {
                                 </li>
                                 <li className="course--stats--list--item">
                                     <h4>Materials Needed</h4>
-                                    <ul>
-                                        <li>{materialsNeeded}</li>
-                                    </ul>
+                                    <ReactMarkdown source={markdownMaterialsNeeded} />
                                 </li>
                             </ul>
                         </div>

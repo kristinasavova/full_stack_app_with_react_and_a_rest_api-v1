@@ -38,7 +38,7 @@ const App = () => (
                 <Route path='/signout' component={UserSignOutWithContext} />
                 <PrivateRoute path='/courses/create' component={CreateCourseWithContext} />
                 <Route exact path='/courses/:id' render={({match}) => <CourseDetailWithContext match={match} /> }/>
-                <Route path='/courses/:id/update' component={({match}) => <UpdateCourseWithContext match={match} /> } />
+                <PrivateRoute path='/courses/:id/update' component={({match}) => <UpdateCourseWithContext match={match} /> } />
                 <Route path='/error' component={Error} />
                 <Route path='/forbidden' component={Forbidden} />
                 <Route path='/notfound' component={NotFound} />

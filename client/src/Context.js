@@ -13,7 +13,7 @@ export class Provider extends Component {
         this.data = new Data ();
         this.state = { 
             authUser: Cookies.getJSON ('authUser') || null,
-            password: Cookies.getJSON ('password') || null 
+            password: Cookies.getJSON ('password') || null
         };
     };
 
@@ -52,7 +52,7 @@ export class Provider extends Component {
             data: this.data,
             actions: { 
                 signIn: this.signIn,
-                signOut: this.signOut
+                signOut: this.signOut,
             }
         };
         
