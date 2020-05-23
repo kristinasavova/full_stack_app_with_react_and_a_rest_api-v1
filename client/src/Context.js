@@ -33,7 +33,7 @@ export class Provider extends Component {
     };
 
     /**
-     * A method to delete a course
+     * A method to delete a course and update state calling getCourses method
      * @param {integer} ID - ID of the course to delete
      * @param {string} username - user's email address
      * @param {string} password - user's password
