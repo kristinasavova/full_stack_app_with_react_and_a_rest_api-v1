@@ -53,7 +53,6 @@ class UpdateCourse extends Component {
 
     /**
      * A method to retrieve values from the inputs and update state with retrieved values 
-     * Ref takes a callback func that receives the underlying DOM element as it's argument
      * @param {object} event
      */
     change = event => {
@@ -112,9 +111,8 @@ class UpdateCourse extends Component {
                                         id="title" 
                                         name="title" 
                                         type="text" 
-                                        defaultValue={title}
+                                        value={title}
                                         onChange={this.change}
-                                        ref={input => this.query = input}
                                         className="input-title course--title--input" 
                                         placeholder="Course title..." />
                                 </div>
@@ -125,9 +123,8 @@ class UpdateCourse extends Component {
                                     <textarea 
                                         id="description" 
                                         name="description" 
-                                        defaultValue={description}
+                                        value={description}
                                         onChange={this.change}
-                                        ref={input => this.query = input}
                                         placeholder="Course description..." /> 
                                 </div>
                             </div>
@@ -142,9 +139,8 @@ class UpdateCourse extends Component {
                                                 id="estimatedTime" 
                                                 name="estimatedTime" 
                                                 type="text" 
-                                                defaultValue={estimatedTime}
+                                                value={estimatedTime}
                                                 onChange={this.change}
-                                                ref={input => this.query = input}
                                                 className="course--time--input"
                                                 placeholder="Hours" />
                                         </div>
@@ -155,9 +151,8 @@ class UpdateCourse extends Component {
                                             <textarea 
                                                 id="materialsNeeded" 
                                                 name="materialsNeeded" 
-                                                defaultValue={materialsNeeded}
+                                                value={materialsNeeded}
                                                 onChange={this.change}
-                                                ref={input => this.query = input}
                                                 placeholder="List materials..." />
                                         </div>
                                     </li>
