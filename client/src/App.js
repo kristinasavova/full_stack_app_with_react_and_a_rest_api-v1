@@ -12,7 +12,7 @@ import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
-import Error from './components/Error';
+import UnhandledError from './components/UnhandledError';
 import Forbidden from './components/Forbidden';
 import NotFound from './components/NotFound';
 
@@ -39,7 +39,7 @@ const App = () => (
                 <PrivateRoute path='/courses/create' component={CreateCourseWithContext} />
                 <Route exact path='/courses/:id' render={({match}) => <CourseDetailWithContext match={match} /> }/>
                 <PrivateRoute path='/courses/:id/update' component={({match}) => <UpdateCourseWithContext match={match} /> } />
-                <Route path='/error' component={Error} />
+                <Route path='/error' component={UnhandledError} />
                 <Route path='/forbidden' component={Forbidden} />
                 <Route path='/notfound' component={NotFound} />
                 <Route component={NotFound} />
